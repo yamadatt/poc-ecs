@@ -1,20 +1,27 @@
 ## このリポジトリは？
 
-以下を実施するためのもの。
+以下を目的とするためのもの。
 
-- ECSでコンテナーを動かす
+- ECSでコンテナーを動かすことを体感する
+
+## やってること
+
 - AWSの環境はterraformで作る
-- GitHubActionsでCI/CD。ECRにPUSH、ローリングアップデート
+- GitHubActionsでCI/CD
+  - ECRにPUSH
+  - ECSタスクを更新（ローリングアップデート）
 
 ## AWSで構築する環境
 
-Pulurarithで構築。
+Pulurarithで出力した構成図。
 
+![](Pluralith_Diagram.jpg)
 
+## 参考
 
-## 参考記事
+タスク定義jsonの出力。
 
-タスク定義の作り方
-
+```
 aws ecs describe-task-definition --task-definition yamada-ecs-task-definition | \
   jq '.taskDefinition | del (.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities)' > task-def.json
+```

@@ -48,12 +48,10 @@ jobs:
             ${{ github.ref }}
             refs/head/main
 
-
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-    
-    
+   
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v4
@@ -64,7 +62,6 @@ jobs:
           tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}     
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
          
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
@@ -81,5 +78,3 @@ jobs:
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
-          
-
