@@ -1,0 +1,47 @@
+{
+  "containerDefinitions": [
+    {
+      "name": "golang-helloworld",
+      "image": "449671225256.dkr.ecr.ap-northeast-1.amazonaws.com/yamatest",
+      "cpu": 0,
+      "portMappings": [
+        {
+          "containerPort": 8091,
+          "hostPort": 8091,
+          "protocol": "tcp",
+          "name": "golang-helloworld",
+          "appProtocol": "http"
+        }
+      ],
+      "essential": true,
+      "environment": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/yamada-ecs-task-definition",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ],
+  "family": "yamada-ecs-task-definition",
+  "executionRoleArn": "arn:aws:iam::449671225256:role/ecsTaskRole",
+  "networkMode": "awsvpc",
+  "volumes": [],
+  "placementConstraints": [],
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "512",
+  "memory": "1024",
+  "registeredAt": "2023-08-03T08:30:24.591000+09:00",
+  "registeredBy": "arn:aws:iam::449671225256:user/yamada"
+}
