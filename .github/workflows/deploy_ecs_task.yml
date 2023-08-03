@@ -8,7 +8,7 @@ on:
 env:
   IMAGE_TAG: ${{ github.sha }}
   ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-  ECR_REPOSITORY: yamadatest
+  ECR_REPOSITORY: yamatest
   ECS_CLUSTER: yamada-ecs-cluster
   ECS_SERVICE: yamada-ecs-service
   ECS_TASK_DEFINITION: ./task-definition.json
