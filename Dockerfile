@@ -1,5 +1,3 @@
-# GitHubActionsからECRへのPUSH検証
-
 # マルチステージビルドで実装
 # 322MBが14MBにイメージ削減
 
