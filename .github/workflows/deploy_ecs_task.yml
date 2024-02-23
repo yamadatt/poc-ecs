@@ -15,13 +15,6 @@ env:
   CONTAINER_NAME: golang-helloworld
 
 jobs:
-  time-line:
-    runs-on: ubuntu-latest
-    steps:
-    # actions-timelineはpost処理の最後に実行されないと全てのジョブの情報を収集できないため、
-    # 呼び出しは `actions/checkout` などよりも前の一番最初に行います。
-    - uses: Kesin11/actions-timeline@v2.0.3
-
   deploy:
     name: Push Image to AWS ECR & Deploy ECS task
     runs-on: ubuntu-latest
@@ -30,6 +23,13 @@ jobs:
       contents: read
 
     steps:
+      - time-line:
+        runs-on: ubuntu-latest
+        steps:
+        # actions-timelineはpost処理の最後に実行されないと全てのジョブの情報を収集できないため、
+        # 呼び出しは `actions/checkout` などよりも前の一番最初に行います。
+        uses: Kesin11/actions-timeline@v2.0.3
+
       - name: Checkout
         uses: actions/checkout@v4
 
