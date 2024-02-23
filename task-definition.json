@@ -2,7 +2,7 @@
   "containerDefinitions": [
     {
       "name": "golang-helloworld",
-      "image": "449671225256.dkr.ecr.ap-northeast-1.amazonaws.com/yamatest",
+      "image": "SED_TARGET_AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/yamatest",
       "cpu": 0,
       "portMappings": [
         {
@@ -29,7 +29,7 @@
     }
   ],
   "family": "yamada-ecs-task-definition",
-  "executionRoleArn": "arn:aws:iam::449671225256:role/ecsTaskRole",
+  "executionRoleArn": "arn:aws:iam::SED_TARGET_AWS_ACCOUNT_ID:role/ecsTaskRole",
   "networkMode": "awsvpc",
   "volumes": [],
   "placementConstraints": [],
