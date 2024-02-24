@@ -31,7 +31,7 @@ resource "aws_ecs_task_definition" "main" {
       ]
       mountPoints = [
         {
-          containerPath = "/mnt"
+          containerPath = "/mnt/efs"
           sourceVolume  = "fargate-efs"
         }
       ]
@@ -55,7 +55,7 @@ resource "aws_ecs_task_definition" "main" {
     name = "fargate-efs"
     efs_volume_configuration {
       file_system_id = aws_efs_file_system.efs.id
-      root_directory = "/mnt"
+      root_directory = "/"
     }
   }
 

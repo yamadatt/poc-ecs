@@ -18,7 +18,7 @@
       "mountPoints": [
         {
           "sourceVolume": "fargate-efs",
-          "containerPath": "/mnt"
+          "containerPath": "/mnt/efs"
         }
       ],
       "volumesFrom": [],
@@ -41,7 +41,7 @@
       "name": "fargate-efs",
       "efsVolumeConfiguration": {
         "fileSystemId": "fs-0ca693347544c1c7e",
-        "rootDirectory": "/mnt"
+        "rootDirectory": "/"
       }
     }
   ],
@@ -55,6 +55,6 @@
   ],
   "cpu": "512",
   "memory": "1024",
-  "registeredAt": "2024-02-24T21:37:13.196000+09:00",
+  "registeredAt": "2024-02-24T22:39:55.323000+09:00",
   "registeredBy": "arn:aws:iam::449671225256:user/yamada"
 }
