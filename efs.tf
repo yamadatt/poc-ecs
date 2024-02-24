@@ -1,7 +1,7 @@
 ## EFS
 resource "aws_security_group" "efs_sg" {
   name   = "efs-sg"
-  vpc_id = aws_vpc.main.id 
+  vpc_id = aws_vpc.main.id
 
   ingress {
     from_port = 2049
