@@ -13,33 +13,32 @@ resource "aws_ecs_task_definition" "main" {
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = aws_iam_role.ecs_task_role.arn
   network_mode             = "awsvpc"
-  container_definitions    = <<-EOS
-  [
+  container_definitions = jsonencode([
     {
-        "name": "${local.container_name}",
-        "image": "449671225256.dkr.ecr.ap-northeast-1.amazonaws.com/yamatest",
-        "portMappings": [
-            {
-                "name": "${local.container_name}",
-                "containerPort": 8091,
-                "hostPort": 8091,
-                "protocol": "tcp",
-                "appProtocol": "http"
-            }
-        ],
-        "essential": true,
-        "logConfiguration": {
-            "logDriver": "awslogs",
-            "options": {
-                "awslogs-create-group": "true",
-                "awslogs-group": "/ecs/yamada-ecs-task-definition",
-                "awslogs-region": "ap-northeast-1",
-                "awslogs-stream-prefix": "ecs"
-            }
+      name      = "${local.container_name}"
+      image     = "449671225256.dkr.ecr.ap-northeast-1.amazonaws.com/yamatest"
+      essential = true
+      portMappings = [
+        {
+          name          = "${local.container_name}"
+          containerPort = 8091
+          hostPort      = 8091
+          protocol      = "tcp"
+          appProtocol   = "http"
         }
+      ]
+      essential = true
+      logConfiguration = {
+        logDriver : "awslogs"
+        options = {
+          awslogs-create-group  = "true"
+          awslogs-group         = "/ecs/yamada-ecs-task-definition"
+          awslogs-region        = "ap-northeast-1"
+          awslogs-stream-prefix = "ecs"
+        }
+      }
     }
-  ]
-  EOS
+  ])
   runtime_platform {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
@@ -52,8 +51,8 @@ resource "aws_ecs_service" "main" {
   task_definition = aws_ecs_task_definition.main.arn
   launch_type     = "FARGATE"
 
-  desired_count   = 1
-  
+  desired_count = 1
+
 
   network_configuration {
     subnets = [
