@@ -2,7 +2,7 @@
   "containerDefinitions": [
     {
       "name": "golang-helloworld",
-      "image": "SED_TARGET_AWS_ACCOUNT_ID.dkr.ecr.ap-northeast-1.amazonaws.com/yamatest",
+      "image": "449671225256.dkr.ecr.ap-northeast-1.amazonaws.com/yamatest",
       "cpu": 0,
       "portMappings": [
         {
@@ -15,7 +15,12 @@
       ],
       "essential": true,
       "environment": [],
-      "mountPoints": [],
+      "mountPoints": [
+        {
+          "sourceVolume": "fargate-efs",
+          "containerPath": "/app"
+        }
+      ],
       "volumesFrom": [],
       "logConfiguration": {
         "logDriver": "awslogs",
@@ -29,9 +34,17 @@
     }
   ],
   "family": "yamada-ecs-task-definition",
-  "executionRoleArn": "arn:aws:iam::SED_TARGET_AWS_ACCOUNT_ID:role/ecsTaskRole",
+  "executionRoleArn": "arn:aws:iam::449671225256:role/ecsTaskRole",
   "networkMode": "awsvpc",
-  "volumes": [],
+  "volumes": [
+    {
+      "name": "fargate-efs",
+      "efsVolumeConfiguration": {
+        "fileSystemId": "fs-0ca693347544c1c7e",
+        "rootDirectory": "/"
+      }
+    }
+  ],
   "placementConstraints": [],
   "runtimePlatform": {
     "cpuArchitecture": "X86_64",
@@ -41,6 +54,7 @@
     "FARGATE"
   ],
   "cpu": "512",
-  "memory": "1024"
-
+  "memory": "1024",
+  "registeredAt": "2024-02-24T21:37:13.196000+09:00",
+  "registeredBy": "arn:aws:iam::449671225256:user/yamada"
 }
