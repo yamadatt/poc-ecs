@@ -41,7 +41,7 @@
       "name": "fargate-efs",
       "efsVolumeConfiguration": {
         "fileSystemId": "fs-0ca693347544c1c7e",
-        "rootDirectory": "/"
+        "rootDirectory": "/app"
       }
     }
   ],
