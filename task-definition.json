@@ -18,7 +18,7 @@
       "mountPoints": [
         {
           "sourceVolume": "fargate-efs",
-          "containerPath": "/app"
+          "containerPath": "/mnt"
         }
       ],
       "volumesFrom": [],
@@ -41,7 +41,7 @@
       "name": "fargate-efs",
       "efsVolumeConfiguration": {
         "fileSystemId": "fs-0ca693347544c1c7e",
-        "rootDirectory": "/app"
+        "rootDirectory": "/mnt"
       }
     }
   ],
