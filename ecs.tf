@@ -1,3 +1,5 @@
+data "aws_caller_identity" "self"{}
+
 locals {
   container_name = "golang-helloworld"
 }
@@ -16,7 +18,7 @@ resource "aws_ecs_task_definition" "main" {
   container_definitions = jsonencode([
     {
       name      = "${local.container_name}"
-      image     = "449671225256.dkr.ecr.ap-northeast-1.amazonaws.com/yamatest"
+      image     = "${data.aws_caller_identity.self.account_id}.dkr.ecr.ap-northeast-1.amazonaws.com/yamatest"
       essential = true
       portMappings = [
         {
