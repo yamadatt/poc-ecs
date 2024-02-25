@@ -34,13 +34,14 @@
     }
   ],
   "family": "yamada-ecs-task-definition",
-  "executionRoleArn": "arn:aws:iam::449671225256:role/ecsTaskRole",
+  "taskRoleArn": "arn:aws:iam::449671225256:role/yamada_ecs_task_role_name",
+  "executionRoleArn": "arn:aws:iam::449671225256:role/ecsTasExecRole",
   "networkMode": "awsvpc",
   "volumes": [
     {
       "name": "fargate-efs",
       "efsVolumeConfiguration": {
-        "fileSystemId": "fs-0ca693347544c1c7e",
+        "fileSystemId": "fs-0ccff437422bd0516",
         "rootDirectory": "/"
       }
     }
@@ -55,6 +56,6 @@
   ],
   "cpu": "512",
   "memory": "1024",
-  "registeredAt": "2024-02-24T22:39:55.323000+09:00",
+  "registeredAt": "2024-02-25T11:44:05.262000+09:00",
   "registeredBy": "arn:aws:iam::449671225256:user/yamada"
 }
