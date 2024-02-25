@@ -3,6 +3,7 @@
 以下を目的とするためのもの。
 
 - ECSでコンテナーを動かすことを体感する
+- ECSの検証を手軽にする
 
 ## やってること
 
@@ -10,18 +11,55 @@
 - GitHubActionsでCI/CD
   - ECRにPUSH
   - ECSタスクを更新（ローリングアップデート）
-
-## AWSで構築する環境
-
-Pulurarithで出力した構成図。
-
-![](Pluralith_Diagram.jpg)
+  - EFSをマウントするので、ファイルを永続化できるようにしている（EFSのIDは手で変更すること）
+  - ECS EXECに対応しているので、タスクにアタッチできる
 
 ## 参考
+
+### タスク定義
 
 タスク定義jsonの出力。
 
 ```
 aws ecs describe-task-definition --task-definition yamada-ecs-task-definition | \
   jq '.taskDefinition | del (.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities)' > task-def.json
+```
+
+ECSのサービスがEXECに対応しているかを確認。
+
+```
+aws ecs describe-services \
+--cluster yamada-ecs-cluster \
+--services yamada-ecs-service \
+--query 'services[0].enableExecuteCommand'
+```
+
+### タスク
+
+タスクのリストを出力
+
+```
+aws ecs list-tasks \
+--cluster yamada-ecs-cluster \
+--service yamada-ecs-service
+```
+
+タスクがEXECに対応しているか確認。
+
+```
+aws ecs describe-tasks \
+--cluster yamada-ecs-cluster \
+--tasks cdc027ce890d40b3a51370fb5fbbc0ef \
+--query 'tasks[0].enableExecuteCommand'
+```
+
+タスクにEXECする。
+
+```
+aws ecs execute-command \
+--cluster yamada-ecs-cluster \
+--task 255d419838dc4b959b70f8e4fc154c1c \
+--container golang-helloworld \
+--interactive \
+--command /bin/sh
 ```

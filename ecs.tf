@@ -13,7 +13,8 @@ resource "aws_ecs_task_definition" "main" {
   cpu                      = 512
   memory                   = 1024
   requires_compatibilities = ["FARGATE"]
-  execution_role_arn       = aws_iam_role.ecs_task_role.arn
+  execution_role_arn       = aws_iam_role.ecs_execution.arn
+  task_role_arn            = aws_iam_role.ecs_task.arn
   network_mode             = "awsvpc"
   container_definitions = jsonencode([
     {
@@ -62,10 +63,11 @@ resource "aws_ecs_task_definition" "main" {
 }
 
 resource "aws_ecs_service" "main" {
-  name            = "yamada-ecs-service"
-  cluster         = aws_ecs_cluster.main.id
-  task_definition = aws_ecs_task_definition.main.arn
-  launch_type     = "FARGATE"
+  name                   = "yamada-ecs-service"
+  cluster                = aws_ecs_cluster.main.id
+  task_definition        = aws_ecs_task_definition.main.arn
+  launch_type            = "FARGATE"
+  enable_execute_command = true #ECS EXECの有効
 
   desired_count = 1
 
