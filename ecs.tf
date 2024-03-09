@@ -34,6 +34,10 @@ resource "aws_ecs_task_definition" "main" {
         {
           containerPath = "/mnt/efs"
           sourceVolume  = "fargate-efs"
+        },
+                {
+          containerPath = "/mnt/efs2"
+          sourceVolume  = "fargate-efs"
         }
       ]
       essential = true

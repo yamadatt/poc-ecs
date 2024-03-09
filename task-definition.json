@@ -19,6 +19,10 @@
         {
           "sourceVolume": "fargate-efs",
           "containerPath": "/mnt/efs"
+        },
+        {
+          "sourceVolume": "fargate-efs2",
+          "containerPath": "/mnt/efs"
         }
       ],
       "volumesFrom": [],
