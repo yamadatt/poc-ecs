@@ -1,60 +1,51 @@
 {
-  "containerDefinitions": [
-    {
-      "name": "golang-helloworld",
-      "image": "449671225256.dkr.ecr.ap-northeast-1.amazonaws.com/yamatest:f728be5e9b07f7aa593d69f412925662c26b5adb",
-      "cpu": 0,
-      "portMappings": [
+    "family": "yamada-ecs-task-definition",
+    "containerDefinitions": [
         {
-          "containerPort": 8091,
-          "hostPort": 8091,
-          "protocol": "tcp",
-          "name": "golang-helloworld",
-          "appProtocol": "http"
+            "name": "golang-helloworld",
+            "image": "449671225256.dkr.ecr.ap-northeast-1.amazonaws.com/yamada-ecs-helloworld:latest",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "golang-helloworld",
+                    "containerPort": 8091,
+                    "hostPort": 8091,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/yamada-ecs-task-definition",
+                    "awslogs-region": "ap-northeast-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "systemControls": []
         }
-      ],
-      "essential": true,
-      "environment": [],
-      "mountPoints": [
+    ],
+    "taskRoleArn": "arn:aws:iam::449671225256:role/yamada_ecs_task_role_name",
+    "executionRoleArn": "arn:aws:iam::449671225256:role/ecsTasExecRole",
+    "networkMode": "awsvpc",
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "512",
+    "memory": "1024",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "tags": [
         {
-          "sourceVolume": "fargate-efs",
-          "containerPath": "/mnt/efs"
+            "key": "resoruce",
+            "value": "terraform"
         }
-      ],
-      "volumesFrom": [],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-create-group": "true",
-          "awslogs-group": "/ecs/yamada-ecs-task-definition",
-          "awslogs-region": "ap-northeast-1",
-          "awslogs-stream-prefix": "ecs"
-        }
-      }
-    }
-  ],
-  "family": "yamada-ecs-task-definition",
-  "executionRoleArn": "arn:aws:iam::449671225256:role/ecsTaskRole",
-  "networkMode": "awsvpc",
-  "volumes": [
-    {
-      "name": "fargate-efs",
-      "efsVolumeConfiguration": {
-        "fileSystemId": "fs-0ca693347544c1c7e",
-        "rootDirectory": "/"
-      }
-    }
-  ],
-  "placementConstraints": [],
-  "runtimePlatform": {
-    "cpuArchitecture": "X86_64",
-    "operatingSystemFamily": "LINUX"
-  },
-  "requiresCompatibilities": [
-    "FARGATE"
-  ],
-  "cpu": "512",
-  "memory": "1024",
-  "registeredAt": "2024-02-24T22:41:51.825000+09:00",
-  "registeredBy": "arn:aws:iam::449671225256:user/yamada"
+    ]
 }
