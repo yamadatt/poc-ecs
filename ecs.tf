@@ -73,7 +73,6 @@ resource "aws_ecs_task_definition" "main" {
 
 
 
-
 }
 
 resource "aws_ecs_service" "main" {
