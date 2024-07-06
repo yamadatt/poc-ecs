@@ -24,6 +24,19 @@ GitHubActionsでのデプロイに時間がかかることに注意。
 
 ### タスク定義
 
+タスク定義追加。タスクを定義したjsonファイルを使用する。
+
+
+```bash
+aws ecs register-task-definition --cli-input-json file://task-def.json
+```
+### ECSデプロイ
+
+```bash
+aws ecs update-service --cluster yamada-ecs-cluster --service yamada-ecs-service --task-definition yamada-ecs-task-definition
+```
+
+
 タスク定義jsonの出力。
 
 ```

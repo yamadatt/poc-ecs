@@ -30,16 +30,16 @@ resource "aws_ecs_task_definition" "main" {
           appProtocol   = "http"
         }
       ]
-      mountPoints = [
-        {
-          containerPath = "/mnt/efs"
-          sourceVolume  = "fargate-efs"
-        },
-                {
-          containerPath = "/mnt/efs2"
-          sourceVolume  = "fargate-efs"
-        }
-      ]
+      # mountPoints = [
+      #   {
+      #     containerPath = "/mnt/efs"
+      #     sourceVolume  = "fargate-efs"
+      #   },
+      #   {
+      #     containerPath = "/mnt/efs2"
+      #     sourceVolume  = "fargate-efs"
+      #   }
+      # ]
       essential = true
       logConfiguration = {
         logDriver : "awslogs"
@@ -56,13 +56,22 @@ resource "aws_ecs_task_definition" "main" {
     cpu_architecture        = "X86_64"
     operating_system_family = "LINUX"
   }
-  volume {
-    name = "fargate-efs"
-    efs_volume_configuration {
-      file_system_id = aws_efs_file_system.efs.id
-      root_directory = "/"
-    }
-  }
+  # volume {
+  #   name = "fargate-efs"
+  #   efs_volume_configuration {
+  #     file_system_id = aws_efs_file_system.efs.id
+  #     root_directory = "/efs1"
+  #   }
+  # }
+  # {
+  #   name = "fargate-efs2"
+  #   efs_volume_configuration {
+  #     file_system_id = aws_efs_file_system.efs.id
+  #     root_directory = "/efs2"
+  #   }
+  # }
+
+
 
 }
 

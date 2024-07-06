@@ -15,16 +15,6 @@
       ],
       "essential": true,
       "environment": [],
-      "mountPoints": [
-        {
-          "sourceVolume": "fargate-efs",
-          "containerPath": "/mnt/efs"
-        },
-        {
-          "sourceVolume": "fargate-efs",
-          "containerPath": "/mnt/efs2"
-        }
-      ],
       "volumesFrom": [],
       "logConfiguration": {
         "logDriver": "awslogs",
@@ -41,15 +31,6 @@
   "taskRoleArn": "arn:aws:iam::449671225256:role/yamada_ecs_task_role_name",
   "executionRoleArn": "arn:aws:iam::449671225256:role/ecsTasExecRole",
   "networkMode": "awsvpc",
-  "volumes": [
-    {
-      "name": "fargate-efs",
-      "efsVolumeConfiguration": {
-        "fileSystemId": "fs-0ccff437422bd0516",
-        "rootDirectory": "/"
-      }
-    }
-  ],
   "placementConstraints": [],
   "runtimePlatform": {
     "cpuArchitecture": "X86_64",
