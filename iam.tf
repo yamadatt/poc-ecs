@@ -21,11 +21,61 @@ resource "aws_iam_role" "ecs_execution" {
   }
 }
 
+# タスク起動＋CloudwatchLogsのポリシーの作成
+resource "aws_iam_policy" "ecs_task_execution_policy" {
+  name        = "ecs_task_execution_policy"
+  description = "Policy for ECS Task Execution Role to use CloudWatch Logs"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams"
+        ],
+        Resource = [
+          "arn:aws:logs:*:*:log-group:/ecs/*",
+          "arn:aws:logs:*:*:log-group:/ecs/*:log-stream:*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "ecr:GetAuthorizationToken",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+
+# タスク起動用IAMロールへのポリシー割り当て
+#resource "aws_iam_role_policy_attachment" "ecs_execution" {
+#  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+#  role       = aws_iam_role.ecs_execution.name
+#}
+
 # タスク起動用IAMロールへのポリシー割り当て
 resource "aws_iam_role_policy_attachment" "ecs_execution" {
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
   role       = aws_iam_role.ecs_execution.name
+  policy_arn = aws_iam_policy.ecs_task_execution_policy.arn
 }
+
+
+
+
+
+
+
 
 
 # コンテナ用IAMロールの定義
@@ -68,7 +118,12 @@ resource "aws_iam_policy" "ecs_task" {
           "ssmmessages:CreateControlChannel",
           "ssmmessages:CreateDataChannel",
           "ssmmessages:OpenControlChannel",
-          "ssmmessages:OpenDataChannel"
+          "ssmmessages:OpenDataChannel",
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams"
         ],
         "Effect" : "Allow",
         "Resource" : [
