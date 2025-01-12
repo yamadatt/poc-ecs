@@ -19,7 +19,7 @@
 
 ![alt text](image.png)
 
-##　使い方
+## 使い方
 
 ### terraformで環境構築
 
