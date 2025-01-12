@@ -16,6 +16,7 @@ resource "aws_ecs_task_definition" "main" {
   execution_role_arn       = aws_iam_role.ecs_execution.arn
   task_role_arn            = aws_iam_role.ecs_task.arn
   network_mode             = "awsvpc"
+
   container_definitions = jsonencode([
     {
       name      = "${local.container_name}"
@@ -94,6 +95,12 @@ resource "aws_ecs_service" "main" {
       aws_security_group.contaner_sg.id
     ]
     assign_public_ip = true
+  }
+
+  lifecycle {
+    ignore_changes = [
+      task_definition
+    ]
   }
 
   load_balancer {
