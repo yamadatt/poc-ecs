@@ -1,14 +1,14 @@
 # マルチステージビルドで実装
 # 322MBが14MBにイメージ削減
 
-FROM golang:1.20.6-alpine3.18 as go_build
+FROM golang:1.23.4-alpine3.21 AS go_build
 WORKDIR /app
 COPY src/go.mod src/main.go ./
 RUN go mod download \
     && go build -o main /app/main.go
 
 
-FROM alpine:3.18
+FROM alpine:3.21
 WORKDIR /app
 COPY --from=go_build /app/main .
 USER 1001
