@@ -77,6 +77,20 @@ resource "aws_security_group_rule" "inbound_http" {
   security_group_id = aws_security_group.alb_sg.id
 }
 
+# 80番ポート許可のインバウンドルール
+resource "aws_security_group_rule" "inbound_http8080" {
+  type      = "ingress"
+  from_port = 8080
+  to_port   = 8080
+  protocol  = "tcp"
+  cidr_blocks = [
+    "0.0.0.0/0"
+  ]
+
+  # ここでweb_serverセキュリティグループに紐付け
+  security_group_id = aws_security_group.alb_sg.id
+}
+
 # 443番ポート許可のインバウンドルール
 resource "aws_security_group_rule" "inbound_https" {
   type      = "ingress"

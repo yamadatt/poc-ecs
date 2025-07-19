@@ -109,3 +109,7 @@ resource "aws_ecs_service" "main" {
     container_port   = 8091
   }
 }
+
+#aws cloudwatch describe-alarms | jq -r '.MetricAlarms[] | [.AlarmName] | @csv'
+#aws cloudwatch set-alarm-state --alarm-name "error-log-alarm" --state-value ALARM --state-reason "test"
+#aws cloudwatch set-alarm-state --alarm-name "example-alarm" --state-value ALARM --state-reason "test"
