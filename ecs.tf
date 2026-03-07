@@ -86,6 +86,7 @@ resource "aws_ecs_service" "main" {
   desired_count = 1
 
 
+
   network_configuration {
     subnets = [
       aws_subnet.public1.id,
@@ -103,12 +104,67 @@ resource "aws_ecs_service" "main" {
     ]
   }
 
+  deployment_configuration {
+    strategy = "BLUE_GREEN" 
+    bake_time_in_minutes = "1"
+
+  }
+
   load_balancer {
-    target_group_arn = aws_lb_target_group.main.arn
+    target_group_arn = aws_lb_target_group.blue.arn
     container_name   = local.container_name
     container_port   = 8091
+    advanced_configuration {
+      alternate_target_group_arn = aws_lb_target_group.green.arn
+      production_listener_rule = aws_lb_listener_rule.production.arn
+      role_arn = aws_iam_role.ecs_infrastructure_role_for_load_balancers.arn
+      test_listener_rule = aws_lb_listener_rule.test.arn
+    }
   }
 }
+
+resource "aws_iam_role" "ecs_infrastructure_role_for_load_balancers" {
+  name = "ecs-load-balancer-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Principal = { Service = "ecs.amazonaws.com" }
+      Action    = "sts:AssumeRole"
+    }]
+  })
+}
+
+# ECS サービスがロードバランサーを管理するために必要なポリシー
+resource "aws_iam_role_policy" "ecs_load_balancer_policy" {
+  name = "ecs-load-balancer-policy"
+  role = aws_iam_role.ecs_infrastructure_role_for_load_balancers.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "elasticloadbalancing:ModifyListener",
+          "elasticloadbalancing:DescribeListeners",
+          "elasticloadbalancing:ModifyRule",
+          "elasticloadbalancing:DescribeRules",
+          "elasticloadbalancing:DescribeTargetGroups",
+          "elasticloadbalancing:ModifyTargetGroup",
+          "elasticloadbalancing:DescribeTargetHealth",
+          "elasticloadbalancing:RegisterTargets",
+          "elasticloadbalancing:DeregisterTargets"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+# ECS Fargate では service-linked role が自動作成されるため、
+# 従来の ECS サービスロールは不要
+# resource "aws_iam_role" "ecs_service_role" は削除
 
 #aws cloudwatch describe-alarms | jq -r '.MetricAlarms[] | [.AlarmName] | @csv'
 #aws cloudwatch set-alarm-state --alarm-name "error-log-alarm" --state-value ALARM --state-reason "test"
